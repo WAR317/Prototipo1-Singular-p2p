@@ -1,0 +1,30 @@
+<!DOCTYPE html><html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>singular_net</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  </head>
+  <body>
+    <script>
+let nodos = [];
+let umbralConexion = 0.4;
+let numNodos = 20;function setup() { createCanvas(windowWidth, windowHeight); for (let i = 0; i < numNodos; i++) { nodos.push(new NodoSingular(i)); } }
+
+function draw() { background(20);
+
+// Mutar nodos for (let nodo of nodos) { nodo.mutar(); }
+
+// Dibujar conexiones for (let i = 0; i < nodos.length; i++) { for (let j = i + 1; j < nodos.length; j++) { let intensidad = nodos[i].intensidadCon(nodos[j]); if (intensidad >= umbralConexion) { stroke(150, 150, 255, intensidad * 255); line(nodos[i].x, nodos[i].y, nodos[j].x, nodos[j].y); } } }
+
+// Dibujar nodos for (let nodo of nodos) { nodo.dibujar(); } }
+
+class NodoSingular { constructor(id) { this.id = id; this.energia = random(0.1, 1.0); this.sensibilidad = random(0.1, 1.0); this.x = random(width); this.y = random(height); }
+
+mutar() { this.energia += random(-0.02, 0.02); this.energia = constrain(this.energia, 0.1, 1.0); }
+
+intensidadCon(otro) { let afinidad = 1.0 / (1 + abs(this.sensibilidad - otro.sensibilidad)); return abs(this.energia - otro.energia) * afinidad; }
+
+dibujar() { noStroke(); let tam = map(this.energia, 0.1, 1.0, 10, 40); let col = color(map(this.sensibilidad, 0.1, 1.0, 50, 255), 100, 200); fill(col); ellipse(this.x, this.y, tam, tam); } } </script>
+
+  </body>
+</html>
